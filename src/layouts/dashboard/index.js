@@ -183,7 +183,7 @@ function Dashboard() {
                 count={totalVotes}
                 percentage={{
                   color: "success",
-                  amount: `+${percentageChanges[0].percentage_change}%`,
+                  amount: `+${percentageChanges ? percentageChanges[0].percentage_change : 0}%`,
                   label: "than yesterday",
                 }}
               />
@@ -197,7 +197,7 @@ function Dashboard() {
                 count={HJSVotes}
                 percentage={{
                   color: "success",
-                  amount: `+${percentageChanges[1].percentage_change}%`,
+                  amount: `+${percentageChanges ? percentageChanges[0].percentage_change : 0}%`,
                   label: "than yesterday",
                 }}
               />
@@ -212,7 +212,7 @@ function Dashboard() {
                 count={ECCVotes}
                 percentage={{
                   color: "success",
-                  amount: `+${percentageChanges[2].percentage_change}%`,
+                  amount: `+${percentageChanges ? percentageChanges[1].percentage_change : 0}%`,
                   label: "than yesterday",
                 }}
               />
@@ -227,7 +227,7 @@ function Dashboard() {
                 count={ECEVotes}
                 percentage={{
                   color: "success",
-                  amount: `+${percentageChanges[2].percentage_change}%`,
+                  amount: `+${percentageChanges ? percentageChanges[2].percentage_change : 0}%`,
                   label: "than yesterday",
                 }}
               />
