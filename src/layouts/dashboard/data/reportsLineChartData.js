@@ -12,14 +12,39 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
+async function getTotalVotesListPastSevenDays() {
+  try {
+    const response = await fetch("https://kisargo.ml/api/getTotalVotesListPastSevenDays");
+    const data = await response.json();
+
+    const votingDays = data.map((entry) => entry.voting_day);
+    const totalVotes = data.map((entry) => entry.total_votes);
+
+    return { votingDays, totalVotes };
+  } catch (error) {
+    console.log("Error:", error);
+    return null;
+  }
+}
+var labels = [];
+var data = [];
+// Usage example:
+getTotalVotesListPastSevenDays()
+  .then((result) => {
+    if (result) {
+      const { votingDays, totalVotes } = result;
+      console.log("Flag");
+      console.log(votingDays);
+      console.log(totalVotes);
+      labels = votingDays;
+      data = totalVotes;
+    }
+  })
+  .catch((error) => console.log("Error:", error));
 
 export default {
   sales: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Mobile apps", data: [50, 40, 300, 320, 500, 350, 200, 230, 500] },
-  },
-  tasks: {
-    labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    datasets: { label: "Desktop apps", data: [50, 40, 300, 220, 500, 250, 400, 230, 500] },
+    labels: labels,
+    datasets: { label: "Mobile apps", data: data },
   },
 };

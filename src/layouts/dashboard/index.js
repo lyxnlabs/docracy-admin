@@ -42,6 +42,7 @@ import { useVotesReportGetPostContext } from "context/VotesReportGetPostContext"
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [reportsBarChartData, setReportsBarChartData] = useState({});
+  const [reportsLinearChartData, setReportsLinearChartData] = useState({});
   const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
   const [selectedPostIDState, setSelectedPostIDState] = useState(1);
   const [showBackdropForAnything, setShowBackdropForAnything] = useState(false);
@@ -49,7 +50,8 @@ function Dashboard() {
   const [HJSVotes, setHJSVotes] = useState(0);
   const [ECCVotes, setECCVotes] = useState(0);
   const [ECEVotes, setECEVotes] = useState(0);
-  const [percentageChanges, setPercentageChanges] = useState(0);
+  const [percentageChanges, setPercentageChanges] = useState(null);
+  const [totalPercentageChanges, setTotalPercentageChanges] = useState(0);
 
   const token = localStorage.getItem("token");
 
@@ -93,6 +95,43 @@ function Dashboard() {
         console.error("Failed to fetch candidates", error);
       });
   }, [selectedPostID]);
+
+  useEffect(() => {
+    async function getTotalVotesListPastSevenDays() {
+      try {
+        const response = await fetch("https://kisargo.ml/api/getTotalVotesListPastSevenDays");
+        const data = await response.json();
+
+        const votingDays = data.map((entry) => entry.voting_day);
+        const totalVotes = data.map((entry) => entry.total_votes);
+
+        return { votingDays, totalVotes };
+      } catch (error) {
+        console.log("Error:", error);
+        return null;
+      }
+    }
+
+    var labels = [];
+    var data = [];
+    // Usage example:
+    getTotalVotesListPastSevenDays()
+      .then((result) => {
+        if (result) {
+          const { votingDays, totalVotes } = result;
+          console.log("Flag");
+          console.log(votingDays);
+          console.log(totalVotes);
+          labels = votingDays;
+          data = totalVotes;
+          setReportsLinearChartData({
+            labels: labels,
+            datasets: { label: "Votes", data: data },
+          });
+        }
+      })
+      .catch((error) => console.log("Error:", error));
+  }, []);
 
   useEffect(() => {
     fetch(`https://kisargo.ml/api/getTotalVotes`, {
@@ -141,6 +180,21 @@ function Dashboard() {
       .then((data) => setECEVotes(data.no_of_votes))
       .catch((err) => console.log(err));
   }, []);
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/totalVotesPercentageFromYday`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTotalPercentageChanges(
+          parseFloat(data.percentage_change.percentage_difference).toFixed(2)
+        );
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     var post_id_percentages = [
@@ -151,7 +205,7 @@ function Dashboard() {
     var post_ids = post_id_percentages.map(function (item) {
       return item.post_id;
     });
-    post_ids.map((post_id, i) => {
+    post_ids.map(async (post_id, i) => {
       fetch(`https://kisargo.ml/api/getPercentageChangeFromYday/${post_id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -160,12 +214,14 @@ function Dashboard() {
       })
         .then((response) => response.json())
         .then((data) => {
-          post_id_percentages[i].percentage_change = data.percentage_change;
+          console.log("data = " + JSON.stringify(data));
+          post_id_percentages[i].percentage_change = parseFloat(data.percentage_difference);
+        })
+        .then(() => {
+          setPercentageChanges(post_id_percentages);
+          console.log("percent = " + JSON.stringify(post_id_percentages));
         })
         .catch((err) => console.log(err));
-      console.log("Percentage changes");
-      console.log(post_id_percentages);
-      setPercentageChanges(post_id_percentages);
     });
   }, []);
 
@@ -183,7 +239,7 @@ function Dashboard() {
                 count={totalVotes}
                 percentage={{
                   color: "success",
-                  amount: `+${percentageChanges ? percentageChanges[0].percentage_change : 0}%`,
+                  amount: `+${totalPercentageChanges ? totalPercentageChanges : 0}%`,
                   label: "than yesterday",
                 }}
               />
@@ -254,11 +310,12 @@ function Dashboard() {
                   title="Number of Votes"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today votes.
+                      (<strong>{`+${totalPercentageChanges ? totalPercentageChanges : 0}%`}</strong>
+                      ) increase in today votes.
                     </>
                   }
                   date="updated 4 min ago"
-                  chart={sales}
+                  chart={reportsLinearChartData}
                 />
               </MDBox>
             </Grid>
