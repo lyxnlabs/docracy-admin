@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useMemo } from "react";
+import { useContext, useMemo, useState } from "react";
 
 // porp-types is a library for typechecking of props
 import PropTypes from "prop-types";
@@ -41,12 +41,20 @@ import MDTypography from "components/MDTypography";
 
 // ReportsBarChart configurations
 import configs from "examples/Charts/BarCharts/ReportsBarChart/configs";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { VotesReportGetPostContext } from "context/VotesReportGetPostContext";
+import { useVotesReportGetPostContext } from "context/VotesReportGetPostContext";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function ReportsBarChart({ color, title, description, date, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
-
+  const [currentPostID, setCurrentPostID] = useState(1);
+  const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
+  const handlePostChange = (e) => {
+    setCurrentPostID(e.target.value);
+    setSelectedPostID(e.target.value);
+  };
   return (
     <Card sx={{ height: "100%" }}>
       <MDBox padding="1rem">
@@ -76,12 +84,30 @@ function ReportsBarChart({ color, title, description, date, chart }) {
           </MDTypography>
           <Divider />
           <MDBox display="flex" alignItems="center">
-            <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
+            <MDTypography component="div" variant="button" color="text" fontWeight="light">
+              Select post
+            </MDTypography>
+            <FormControl fullWidth>
+              <InputLabel id="votes-bar-graph">Post</InputLabel>
+              <Select
+                labelId="votes-bar-graph"
+                value={currentPostID}
+                label="Post"
+                onChange={handlePostChange}
+                sx={{ p: 2, pl: 0 }}
+              >
+                <MenuItem value={1}>Honorary Joint Treasurer</MenuItem>
+                <MenuItem value={2}>Executive Council Member - Clinician </MenuItem>
+                <MenuItem value={3}>Executive Council Member - Embryologist</MenuItem>
+              </Select>
+            </FormControl>
+            {/* <MDTypography variant="button" color="text" lineHeight={1} sx={{ mt: 0.15, mr: 0.5 }}>
               <Icon>schedule</Icon>
             </MDTypography>
+
             <MDTypography variant="button" color="text" fontWeight="light">
               {date}
-            </MDTypography>
+            </MDTypography> */}
           </MDBox>
         </MDBox>
       </MDBox>

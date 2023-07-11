@@ -28,15 +28,146 @@ import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 // Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
+
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useContext, useEffect, useState } from "react";
+import { VotesReportGetPostContext } from "context/VotesReportGetPostContext";
+import { Backdrop, CircularProgress } from "@mui/material";
+import { useVotesReportGetPostContext } from "context/VotesReportGetPostContext";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [reportsBarChartData, setReportsBarChartData] = useState({});
+  const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
+  const [selectedPostIDState, setSelectedPostIDState] = useState(1);
+  const [showBackdropForAnything, setShowBackdropForAnything] = useState(false);
+  const [totalVotes, setTotalVotes] = useState(0);
+  const [HJSVotes, setHJSVotes] = useState(0);
+  const [ECCVotes, setECCVotes] = useState(0);
+  const [ECEVotes, setECEVotes] = useState(0);
+  const [percentageChanges, setPercentageChanges] = useState(0);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    setShowBackdropForAnything(true);
+    const votingData = {};
+    fetch(`https://kisargo.ml/api/getVotesByPost/${selectedPostID ? selectedPostID : 1}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        const votedCountsList = data;
+        const no_of_votes_list = data.map((candidate) => candidate.no_of_votes);
+        console.log(no_of_votes_list);
+        var reportsBarChartDataTemp = {};
+        reportsBarChartDataTemp.datasets = { label: "Votes", data: no_of_votes_list };
+        fetch(`https://kisargo.ml/api/getAllNamesByCandidateIdList`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            candidate_id_list: votedCountsList.map((item) => item.candidate_id),
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            reportsBarChartDataTemp.labels = data.map((item) => {
+              return item.first_name + " " + item.last_name;
+            });
+            console.log(reportsBarChartDataTemp);
+            setReportsBarChartData(reportsBarChartDataTemp);
+            setShowBackdropForAnything(false);
+          });
+      })
+      .catch((error) => {
+        console.error("Failed to fetch candidates", error);
+      });
+  }, [selectedPostID]);
+
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/getTotalVotes`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setTotalVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/getTotalVotes/1`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setHJSVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/getTotalVotes/2`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECCVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/getTotalVotes/3`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECEVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    var post_id_percentages = [
+      { post_id: 1, percentage_change: 0 },
+      { post_id: 2, percentage_change: 0 },
+      { post_id: 3, percentage_change: 0 },
+    ];
+    var post_ids = post_id_percentages.map(function (item) {
+      return item.post_id;
+    });
+    post_ids.map((post_id, i) => {
+      fetch(`https://kisargo.ml/api/getPercentageChangeFromYday/${post_id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          post_id_percentages[i].percentage_change = data.percentage_change;
+        })
+        .catch((err) => console.log(err));
+      console.log("Percentage changes");
+      console.log(post_id_percentages);
+      setPercentageChanges(post_id_percentages);
+    });
+  }, []);
 
   return (
     <DashboardLayout>
@@ -48,12 +179,12 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="dark"
                 icon="weekend"
-                title="Bookings"
-                count={281}
+                title="Total Votes"
+                count={totalVotes}
                 percentage={{
                   color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
+                  amount: `+${percentageChanges[0].percentage_change}%`,
+                  label: "than yesterday",
                 }}
               />
             </MDBox>
@@ -62,12 +193,12 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
+                title={"Hon. Joint Secretary Votes"}
+                count={HJSVotes}
                 percentage={{
                   color: "success",
-                  amount: "+3%",
-                  label: "than last month",
+                  amount: `+${percentageChanges[1].percentage_change}%`,
+                  label: "than yesterday",
                 }}
               />
             </MDBox>
@@ -77,11 +208,11 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="store"
-                title="Revenue"
-                count="34k"
+                title="EC Member - Clinician"
+                count={ECCVotes}
                 percentage={{
                   color: "success",
-                  amount: "+1%",
+                  amount: `+${percentageChanges[2].percentage_change}%`,
                   label: "than yesterday",
                 }}
               />
@@ -92,12 +223,12 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="primary"
                 icon="person_add"
-                title="Followers"
-                count="+91"
+                title="EC Member - Embryologist"
+                count={ECEVotes}
                 percentage={{
                   color: "success",
-                  amount: "",
-                  label: "Just updated",
+                  amount: `+${percentageChanges[2].percentage_change}%`,
+                  label: "than yesterday",
                 }}
               />
             </MDBox>
@@ -109,9 +240,9 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
-                  title="website views"
+                  title="Leading Candidates"
                   description="Last Campaign Performance"
-                  date="campaign sent 2 days ago"
+                  date="updated 2 seconds ago"
                   chart={reportsBarChartData}
                 />
               </MDBox>
@@ -120,25 +251,14 @@ function Dashboard() {
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
+                  title="Number of Votes"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today sales.
+                      (<strong>+15%</strong>) increase in today votes.
                     </>
                   }
                   date="updated 4 min ago"
                   chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
                 />
               </MDBox>
             </Grid>
@@ -156,6 +276,12 @@ function Dashboard() {
         </MDBox>
       </MDBox>
       <Footer />
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={showBackdropForAnything}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </DashboardLayout>
   );
 }

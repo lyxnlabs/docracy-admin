@@ -14,6 +14,21 @@ Coded by www.creative-tim.com
 */
 
 export default {
-  labels: ["M", "T", "W", "T", "F", "S", "S"],
-  datasets: { label: "Sales", data: [50, 20, 10, 22, 50, 10, 40] },
+  labels: [
+    "John Doe",
+    "M. harry",
+    "Joseph Morry",
+    "Joseph Steve",
+    "Serted",
+    "Krishna",
+    "Krishna",
+    "John Doe",
+    "M. harry",
+    "Joseph Morry",
+    "Joseph Steve",
+    "Serted",
+    "Krishna",
+    "Krishna",
+  ],
+  datasets: { label: "Votes", data: [50, 20, 10, 22, 50, 10, 40, 50, 20, 10, 22, 50, 10, 40] },
 };
