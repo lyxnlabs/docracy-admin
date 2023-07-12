@@ -49,8 +49,9 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 function ReportsBarChart({ color, title, description, date, chart }) {
   const { data, options } = configs(chart.labels || [], chart.datasets || {});
-  const [currentPostID, setCurrentPostID] = useState(1);
   const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
+
+  const [currentPostID, setCurrentPostID] = useState(selectedPostID);
   const handlePostChange = (e) => {
     setCurrentPostID(e.target.value);
     setSelectedPostID(e.target.value);

@@ -69,12 +69,12 @@ function Footer({ company, links }) {
         by
         <Link href={href} target="_blank">
           <MDTypography variant="button" fontWeight="medium">
-            &nbsp;{name}&nbsp;
+            &nbsp;{"LYXN LABS"}&nbsp;
           </MDTypography>
         </Link>
-        for a better web.
+        in Collaboration with <b style={{ marginLeft: 3 }}> KISAR,Bangalore</b>
       </MDBox>
-      <MDBox
+      {/* <MDBox
         component="ul"
         sx={({ breakpoints }) => ({
           display: "flex",
@@ -92,7 +92,7 @@ function Footer({ company, links }) {
         })}
       >
         {renderLinks()}
-      </MDBox>
+      </MDBox> */}
     </MDBox>
   );
 }

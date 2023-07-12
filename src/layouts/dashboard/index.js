@@ -326,9 +326,6 @@ function Dashboard() {
             <Grid item xs={12} md={6} lg={8}>
               <Projects />
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
           </Grid>
         </MDBox>
       </MDBox>

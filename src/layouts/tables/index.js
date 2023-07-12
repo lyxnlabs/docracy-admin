@@ -30,11 +30,24 @@ import DataTable from "examples/Tables/DataTable";
 // Data
 import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useVotesReportGetPostContext } from "context/VotesReportGetPostContext";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
   const { columns: pColumns, rows: pRows } = projectsTableData();
+  const [currentPostID, setCurrentPostID] = useState(1);
+  const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
 
+  useEffect(() => {
+    setCurrentPostID(selectedPostID);
+  }, [selectedPostID]);
+
+  const handlePostChange = (e) => {
+    setCurrentPostID(e.target.value);
+    setSelectedPostID(e.target.value);
+  };
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -53,10 +66,30 @@ function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Authors Table
+                  Leader-Board By Post
                 </MDTypography>
               </MDBox>
+
               <MDBox pt={3}>
+                <MDTypography sx={{ p: 1, pt: 0, ml: 1 }} variant="h6">
+                  Select the post you want view votes of
+                </MDTypography>
+                <FormControl sx={{ p: 1, ml: 1 }}>
+                  <InputLabel id="votes-bar-graph" sx={{ p: 1 }}>
+                    Post
+                  </InputLabel>
+                  <Select
+                    labelId="votes-bar-graph"
+                    value={currentPostID}
+                    label="Post"
+                    onChange={handlePostChange}
+                    sx={{ p: 2, pl: 0 }}
+                  >
+                    <MenuItem value={1}>Honorary Joint Treasurer</MenuItem>
+                    <MenuItem value={2}>Executive Council Member - Clinician </MenuItem>
+                    <MenuItem value={3}>Executive Council Member - Embryologist</MenuItem>
+                  </Select>
+                </FormControl>
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={false}
@@ -80,10 +113,29 @@ function Tables() {
                 coloredShadow="info"
               >
                 <MDTypography variant="h6" color="white">
-                  Projects Table
+                  Voters Data
                 </MDTypography>
               </MDBox>
               <MDBox pt={3}>
+                <MDTypography sx={{ p: 1, pt: 0, ml: 1 }} variant="h6">
+                  Select the post you want view votes of
+                </MDTypography>
+                <FormControl sx={{ p: 1, ml: 1 }}>
+                  <InputLabel id="votes-bar-graph" sx={{ p: 1 }}>
+                    Post
+                  </InputLabel>
+                  <Select
+                    labelId="votes-bar-graph"
+                    value={currentPostID}
+                    label="Post"
+                    onChange={handlePostChange}
+                    sx={{ p: 2, pl: 0 }}
+                  >
+                    <MenuItem value={1}>Honorary Joint Treasurer</MenuItem>
+                    <MenuItem value={2}>Executive Council Member - Clinician </MenuItem>
+                    <MenuItem value={3}>Executive Council Member - Embryologist</MenuItem>
+                  </Select>
+                </FormControl>
                 <DataTable
                   table={{ columns: pColumns, rows: pRows }}
                   isSorted={false}

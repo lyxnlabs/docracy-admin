@@ -31,8 +31,19 @@ import logoAtlassian from "assets/images/small-logos/logo-atlassian.svg";
 import logoSlack from "assets/images/small-logos/logo-slack.svg";
 import logoSpotify from "assets/images/small-logos/logo-spotify.svg";
 import logoInvesion from "assets/images/small-logos/logo-invision.svg";
+import { useEffect, useState } from "react";
+import { useVotesReportGetPostContext } from "context/VotesReportGetPostContext";
 
 export default function data() {
+  const [voterData, setVoterData] = useState([]);
+  const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
+
+  useEffect(() => {
+    fetch(`https://kisargo.ml/api/getVotersDataByPostId/${selectedPostID}`, {})
+      .then((response) => response.json())
+      .then((data) => setVoterData(data))
+      .catch((err) => console.log(err));
+  }, [selectedPostID]);
   const Project = ({ image, name }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDAvatar src={image} name={name} size="sm" variant="rounded" />
@@ -55,128 +66,210 @@ export default function data() {
 
   return {
     columns: [
-      { Header: "project", accessor: "project", width: "30%", align: "left" },
-      { Header: "budget", accessor: "budget", align: "left" },
-      { Header: "status", accessor: "status", align: "center" },
+      { Header: "Voter name", accessor: "voter_name", width: "30%", align: "left" },
+      { Header: "Voter email", accessor: "voter_email", align: "left" },
+      { Header: "Voter phone", accessor: "voter_phone", align: "center" },
       { Header: "completion", accessor: "completion", align: "center" },
-      { Header: "action", accessor: "action", align: "center" },
+      { Header: "CANDIDATE SELECTION", accessor: "candidate_names_voted_for", align: "center" },
     ],
-
-    rows: [
-      {
-        project: <Project image={LogoAsana} name="Asana" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $2,500
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            working
-          </MDTypography>
-        ),
-        completion: <Progress color="info" value={60} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-      {
-        project: <Project image={logoGithub} name="Github" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $5,000
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            done
-          </MDTypography>
-        ),
-        completion: <Progress color="success" value={100} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-      {
-        project: <Project image={logoAtlassian} name="Atlassian" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $3,400
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            canceled
-          </MDTypography>
-        ),
-        completion: <Progress color="error" value={30} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-      {
-        project: <Project image={logoSpotify} name="Spotify" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $14,000
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            working
-          </MDTypography>
-        ),
-        completion: <Progress color="info" value={80} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-      {
-        project: <Project image={logoSlack} name="Slack" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $1,000
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            canceled
-          </MDTypography>
-        ),
-        completion: <Progress color="error" value={0} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-      {
-        project: <Project image={logoInvesion} name="Invesion" />,
-        budget: (
-          <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
-            $2,300
-          </MDTypography>
-        ),
-        status: (
-          <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-            done
-          </MDTypography>
-        ),
-        completion: <Progress color="success" value={100} />,
-        action: (
-          <MDTypography component="a" href="#" color="text">
-            <Icon>more_vert</Icon>
-          </MDTypography>
-        ),
-      },
-    ],
+    rows: voterData
+      ? voterData.map((row) => {
+          return {
+            voter_name: <Project name={row.voter_fullName} sx={{ ml: 0 }} />,
+            voter_email: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="button"
+                color="text"
+                fontWeight="medium"
+              >
+                {row.voter_email}
+              </MDTypography>
+            ),
+            voter_phone: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="caption"
+                color="text"
+                fontWeight="medium"
+              >
+                {row.voter_phone}
+              </MDTypography>
+            ),
+            completion: <Progress color="info" value={row.if_has_voted === "Yes" ? 100 : 0} />,
+            candidate_names_voted_for: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="caption"
+                color="text"
+                fontWeight="medium"
+              >
+                {row.candidate_names_voted_for}
+              </MDTypography>
+            ),
+          };
+        })
+      : [
+          {
+            voter_name: <Project name={row.voter_name} />,
+            voter_email: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="button"
+                color="text"
+                fontWeight="medium"
+              >
+                TRY AGAIN
+              </MDTypography>
+            ),
+            voter_phone: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="caption"
+                color="text"
+                fontWeight="medium"
+              >
+                NO DATA
+              </MDTypography>
+            ),
+            candidate_names_voted_for: (
+              <MDTypography
+                component="a"
+                href="#"
+                variant="caption"
+                color="text"
+                fontWeight="medium"
+              >
+                TRY AGAIN
+              </MDTypography>
+            ),
+          },
+        ],
+    // rows: [
+    //   {
+    //     project: <Project image={LogoAsana} name="Asana" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $2,500
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         working
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="info" value={60} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //     selection: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    //   {
+    //     project: <Project image={logoGithub} name="Github" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $5,000
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         done
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="success" value={100} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    //   {
+    //     project: <Project image={logoAtlassian} name="Atlassian" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $3,400
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         canceled
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="error" value={30} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    //   {
+    //     project: <Project image={logoSpotify} name="Spotify" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $14,000
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         working
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="info" value={80} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    //   {
+    //     project: <Project image={logoSlack} name="Slack" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $1,000
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         canceled
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="error" value={0} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    //   {
+    //     project: <Project image={logoInvesion} name="Invesion" />,
+    //     budget: (
+    //       <MDTypography component="a" href="#" variant="button" color="text" fontWeight="medium">
+    //         $2,300
+    //       </MDTypography>
+    //     ),
+    //     status: (
+    //       <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
+    //         done
+    //       </MDTypography>
+    //     ),
+    //     completion: <Progress color="success" value={100} />,
+    //     action: (
+    //       <MDTypography component="a" href="#" color="text">
+    //         <Icon>more_vert</Icon>
+    //       </MDTypography>
+    //     ),
+    //   },
+    // ],
   };
 }
