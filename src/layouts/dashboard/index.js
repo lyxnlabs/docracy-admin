@@ -189,9 +189,7 @@ function Dashboard() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setTotalPercentageChanges(
-          parseFloat(data.percentage_change.percentage_difference).toFixed(2)
-        );
+        setTotalPercentageChanges(parseInt(data.percentage_change.percentage_difference));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -215,7 +213,7 @@ function Dashboard() {
         .then((response) => response.json())
         .then((data) => {
           console.log("data = " + JSON.stringify(data));
-          post_id_percentages[i].percentage_change = parseFloat(data.percentage_difference);
+          post_id_percentages[i].percentage_change = parseInt(data.percentage_difference);
         })
         .then(() => {
           setPercentageChanges(post_id_percentages);
@@ -238,8 +236,16 @@ function Dashboard() {
                 title="Total Votes"
                 count={totalVotes}
                 percentage={{
-                  color: "success",
-                  amount: `+${totalPercentageChanges ? totalPercentageChanges : 0}%`,
+                  amount: totalPercentageChanges
+                    ? totalPercentageChanges > 0
+                      ? `+${totalPercentageChanges}%`
+                      : `${totalPercentageChanges}%`
+                    : 0,
+                  color: totalPercentageChanges
+                    ? totalPercentageChanges > 0
+                      ? `success`
+                      : `error`
+                    : "success",
                   label: "than yesterday",
                 }}
               />
@@ -252,8 +258,16 @@ function Dashboard() {
                 title={"Hon. Joint Secretary Votes"}
                 count={HJSVotes}
                 percentage={{
-                  color: "success",
-                  amount: `+${percentageChanges ? percentageChanges[0].percentage_change : 0}%`,
+                  amount: percentageChanges
+                    ? percentageChanges[0].percentage_change > 0
+                      ? `+${percentageChanges[0].percentage_change}%`
+                      : `${percentageChanges[0].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[0].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
                   label: "than yesterday",
                 }}
               />
@@ -267,8 +281,16 @@ function Dashboard() {
                 title="EC Member - Clinician"
                 count={ECCVotes}
                 percentage={{
-                  color: "success",
-                  amount: `+${percentageChanges ? percentageChanges[1].percentage_change : 0}%`,
+                  amount: percentageChanges
+                    ? percentageChanges[1].percentage_change > 0
+                      ? `+${percentageChanges[1].percentage_change}%`
+                      : `${percentageChanges[1].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[1].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
                   label: "than yesterday",
                 }}
               />
@@ -282,8 +304,16 @@ function Dashboard() {
                 title="EC Member - Embryologist"
                 count={ECEVotes}
                 percentage={{
-                  color: "success",
-                  amount: `+${percentageChanges ? percentageChanges[2].percentage_change : 0}%`,
+                  amount: percentageChanges
+                    ? percentageChanges[2].percentage_change > 0
+                      ? `+${percentageChanges[2].percentage_change}%`
+                      : `${percentageChanges[2].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[2].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
                   label: "than yesterday",
                 }}
               />
@@ -310,8 +340,21 @@ function Dashboard() {
                   title="Number of Votes"
                   description={
                     <>
-                      (<strong>{`+${totalPercentageChanges ? totalPercentageChanges : 0}%`}</strong>
-                      ) increase in today votes.
+                      (
+                      <strong>{`${
+                        totalPercentageChanges
+                          ? totalPercentageChanges < 0
+                            ? totalPercentageChanges * -1
+                            : totalPercentageChanges
+                          : 0
+                      }%`}</strong>
+                      ){" "}
+                      {totalPercentageChanges
+                        ? totalPercentageChanges > 0
+                          ? `increase `
+                          : `decrease `
+                        : "increase"}
+                      in today votes.
                     </>
                   }
                   date="updated 4 min ago"
