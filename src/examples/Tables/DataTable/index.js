@@ -91,7 +91,10 @@ function DataTable({
     <MDPagination
       item
       key={option}
-      onClick={() => gotoPage(Number(option))}
+      onClick={() => {
+        gotoPage(Number(option));
+        alert(option);
+      }}
       active={pageIndex === option}
     >
       {option + 1}

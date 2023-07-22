@@ -140,7 +140,7 @@ function Tables() {
                   table={{ columns: pColumns, rows: pRows }}
                   isSorted={false}
                   entriesPerPage={false}
-                  showTotalEntries={false}
+                  showTotalEntries={true}
                   noEndBorder
                 />
               </MDBox>

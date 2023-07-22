@@ -39,7 +39,7 @@ export default function data() {
   const [tableData, setTableData] = useState(null);
 
   useEffect(() => {
-    fetch(`https://kisargo.ml/api/getAllVotes`, {})
+    fetch(`https://lyxnlabsapi.online/api/getAllVotes`, {})
       .then((response) => response.json())
       .then((data) => setTableData(data))
       .catch((err) => console.log(err));
