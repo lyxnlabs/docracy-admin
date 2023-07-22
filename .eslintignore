@@ -1,0 +1,7 @@
+# Ignore all files and directories inside the "node_modules" folder
+node_modules/
+
+# Ignore build output and generated files
+build/
+dist/
+*.min.js
