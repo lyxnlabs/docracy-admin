@@ -47,7 +47,11 @@ function Dashboard() {
   const [selectedPostIDState, setSelectedPostIDState] = useState(1);
   const [showBackdropForAnything, setShowBackdropForAnything] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
+  const [VPVotes, setVPVotes] = useState(0);
+  const [HSVotes, setHSVotes] = useState(0);
+  const [HTVotes, setHTVotes] = useState(0);
   const [HJSVotes, setHJSVotes] = useState(0);
+  const [HJTVotes, setHJTVotes] = useState(0);
   const [ECCVotes, setECCVotes] = useState(0);
   const [ECEVotes, setECEVotes] = useState(0);
   const [percentageChanges, setPercentageChanges] = useState(null);
@@ -181,6 +185,50 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
+    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/4`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECEVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
+    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/5`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECEVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
+    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/6`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECEVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
+    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/7`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => setECEVotes(data.no_of_votes))
+      .catch((err) => console.log(err));
+  }, []);
+  useEffect(() => {
     fetch(`https://lyxnlabsapi.online/api/totalVotesPercentageFromYday`, {
       headers: {
         "Content-Type": "application/json",
@@ -199,6 +247,11 @@ function Dashboard() {
       { post_id: 1, percentage_change: 0 },
       { post_id: 2, percentage_change: 0 },
       { post_id: 3, percentage_change: 0 },
+      { post_id: 4, percentage_change: 0 },
+      { post_id: 5, percentage_change: 0 },
+      { post_id: 6, percentage_change: 0 },
+      { post_id: 7, percentage_change: 0 },
+      
     ];
     var post_ids = post_id_percentages.map(function (item) {
       return item.post_id;
@@ -255,8 +308,8 @@ function Dashboard() {
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
-                title={"Hon. Joint Secretary Votes"}
-                count={HJSVotes}
+                title={"Vice President"}
+                count={VPVotes}
                 percentage={{
                   amount: percentageChanges
                     ? percentageChanges[0].percentage_change > 0
@@ -276,10 +329,9 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="EC Member - Clinician"
-                count={ECCVotes}
+                icon="leaderboard"
+                title={"Hon Secretary"}
+                count={HSVotes}
                 percentage={{
                   amount: percentageChanges
                     ? percentageChanges[1].percentage_change > 0
@@ -299,10 +351,9 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="EC Member - Embryologist"
-                count={ECEVotes}
+                icon="leaderboard"
+                title={"Hon Treasurer"}
+                count={HTVotes}
                 percentage={{
                   amount: percentageChanges
                     ? percentageChanges[2].percentage_change > 0
@@ -311,6 +362,94 @@ function Dashboard() {
                     : 0,
                   color: percentageChanges
                     ? percentageChanges[2].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderbaord"
+                title="Hon Joint Secretary"
+                count={HJSVotes}
+                percentage={{
+                  amount: percentageChanges
+                    ? percentageChanges[3].percentage_change > 0
+                      ? `+${percentageChanges[3].percentage_change}%`
+                      : `${percentageChanges[3].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[3].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderbaord"
+                title="Hon Joint Treasurer"
+                count={HJTVotes}
+                percentage={{
+                  amount: percentageChanges
+                    ? percentageChanges[4].percentage_change > 0
+                      ? `+${percentageChanges[4].percentage_change}%`
+                      : `${percentageChanges[4].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[4].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderbaord"
+                title="Clinician "
+                count={ECCVotes}
+                percentage={{
+                  amount: percentageChanges
+                    ? percentageChanges[5].percentage_change > 0
+                      ? `+${percentageChanges[5].percentage_change}%`
+                      : `${percentageChanges[5].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[5].percentage_change > 0
+                      ? `success`
+                      : `error`
+                    : "success",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                icon="leaderbaord"
+                title="Embryologist "
+                count={ECEVotes}
+                percentage={{
+                  amount: percentageChanges
+                    ? percentageChanges[6].percentage_change > 0
+                      ? `+${percentageChanges[6].percentage_change}%`
+                      : `${percentageChanges[6].percentage_change}%`
+                    : 0,
+                  color: percentageChanges
+                    ? percentageChanges[6].percentage_change > 0
                       ? `success`
                       : `error`
                     : "success",

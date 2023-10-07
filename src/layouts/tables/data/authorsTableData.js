@@ -23,6 +23,8 @@ import MDBadge from "components/MDBadge";
 
 // Images
 import team2 from "assets/images/team-2.jpg";
+import team from "assets/images/avatar.png";
+
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
 import { useEffect, useState } from "react";
@@ -77,7 +79,7 @@ export default function data() {
       voteDistribution.map((row) => {
         return {
           author: (
-            <Author image={team2} name={row.candidate_fullname} email={row.candidate_email} />
+            <Author image={team} name={row.candidate_fullname} email={row.candidate_email} />
           ),
           function: <Job title={row.post_name} description="Organization" />,
           status: (

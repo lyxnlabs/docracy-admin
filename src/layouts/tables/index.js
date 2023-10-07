@@ -85,9 +85,14 @@ function Tables() {
                     onChange={handlePostChange}
                     sx={{ p: 2, pl: 0 }}
                   >
-                    <MenuItem value={1}>Honorary Joint Treasurer</MenuItem>
-                    <MenuItem value={2}>Executive Council Member - Clinician </MenuItem>
-                    <MenuItem value={3}>Executive Council Member - Embryologist</MenuItem>
+                <MenuItem value={1}>Vice Chairperson</MenuItem>
+                <MenuItem value={2}>Hon Secretary</MenuItem>
+                <MenuItem value={3}>Hon Treasurer</MenuItem>
+                <MenuItem value={4}>Hon Joint Secretary</MenuItem>
+                <MenuItem value={5}>Hon Joint Treasurer</MenuItem>
+                <MenuItem value={6}>Executive Council Member - Clinician </MenuItem>
+                <MenuItem value={7}>Executive Council Member - Embryologist</MenuItem>
+       
                   </Select>
                 </FormControl>
                 <DataTable
@@ -131,9 +136,14 @@ function Tables() {
                     onChange={handlePostChange}
                     sx={{ p: 2, pl: 0 }}
                   >
-                    <MenuItem value={1}>Honorary Joint Treasurer</MenuItem>
-                    <MenuItem value={2}>Executive Council Member - Clinician </MenuItem>
-                    <MenuItem value={3}>Executive Council Member - Embryologist</MenuItem>
+                <MenuItem value={1}>Vice Chairperson</MenuItem>
+                <MenuItem value={2}>Hon Secretary</MenuItem>
+                <MenuItem value={3}>Hon Treasurer</MenuItem>
+                <MenuItem value={4}>Hon Joint Secretary</MenuItem>
+                <MenuItem value={5}>Hon Joint Treasurer</MenuItem>
+                <MenuItem value={6}>Executive Council Member - Clinician </MenuItem>
+                <MenuItem value={7}>Executive Council Member - Embryologist</MenuItem>
+       
                   </Select>
                 </FormControl>
                 <DataTable
