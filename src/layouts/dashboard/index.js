@@ -47,6 +47,7 @@ function Dashboard() {
   const [selectedPostIDState, setSelectedPostIDState] = useState(1);
   const [showBackdropForAnything, setShowBackdropForAnything] = useState(false);
   const [totalVotes, setTotalVotes] = useState(0);
+  const [numberOfPeopleVoted,setNumberOfPeopleVoted] = useState(0);
   const [VPVotes, setVPVotes] = useState(0);
   const [HSVotes, setHSVotes] = useState(0);
   const [HTVotes, setHTVotes] = useState(0);
@@ -148,86 +149,97 @@ function Dashboard() {
       .then((data) => setTotalVotes(data.no_of_votes))
       .catch((err) => console.log(err));
   }, []);
-
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/1`, {
+    fetch(`https://lyxnlabsapi.online/api/getNumberOfPeopleVoted`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => response.json())
-      .then((data) => setHJSVotes(data.no_of_votes))
+      .then((data) => setNumberOfPeopleVoted(data.no_of_people_voted))
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/2`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECCVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/1`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setHJSVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
 
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/3`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECEVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/4`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECEVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/5`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECEVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/6`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECEVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
-  useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes/7`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => setECEVotes(data.no_of_votes))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/2`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECCVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/3`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECEVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/4`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECEVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/5`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECEVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/6`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECEVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
+  // useEffect(() => {
+  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/7`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => setECEVotes(data.no_of_votes))
+  //     .catch((err) => console.log(err));
+  // }, []);
   useEffect(() => {
     fetch(`https://lyxnlabsapi.online/api/totalVotesPercentageFromYday`, {
       headers: {
@@ -288,6 +300,29 @@ function Dashboard() {
                 icon="weekend"
                 title="Total Votes"
                 count={totalVotes}
+                percentage={{
+                  amount: totalPercentageChanges
+                    ? totalPercentageChanges > 0
+                      ? `+${totalPercentageChanges}%`
+                      : `${totalPercentageChanges}%`
+                    : 0,
+                  color: totalPercentageChanges
+                    ? totalPercentageChanges > 0
+                      ? `success`
+                      : `error`
+                    : "success",
+                  label: "than yesterday",
+                }}
+              />
+            </MDBox>
+          </Grid>
+          <Grid item xs={12} md={6} lg={3}>
+            <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="dark"
+                icon="weekend"
+                title="Total Number of people Voted"
+                count={numberOfPeopleVoted}
                 percentage={{
                   amount: totalPercentageChanges
                     ? totalPercentageChanges > 0

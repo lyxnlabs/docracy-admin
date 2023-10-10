@@ -85,8 +85,8 @@ export default function data() {
           status: (
             <MDBox ml={-1}>
               <MDBadge
-                badgeContent={row.candidate_rank <= 4 ? "LEADING" : "NON-LEADING"}
-                color={row.candidate_rank <= 4 ? "success" : "dark"}
+                badgeContent={row.post_name === "Clinician" ? (row.candidate_rank <= 4 ? "LEADING" : "NON-LEADING") : row.post_name === "Embryologist" ? (row.candidate_rank <= 2 ? "LEADING" : "NON-LEADING") : row.post_name === "Hon Secretary" ? (row.candidate_rank == 1 ? "LEADING" : "NON-LEADING") : "INVALID"}
+                color={row.post_name === "Clinician" ? (row.candidate_rank <= 4 ? "success" : "dark") : row.post_name === "Embryologist" ? (row.candidate_rank <= 2 ? "success" : "dark") : row.post_name === "Hon Secretary" ? (row.candidate_rank == 1 ? "success" : "dark") : "INVALID"}
                 variant="gradient"
                 size="sm"
               />

@@ -9,7 +9,7 @@ export const useVotesReportGetPostContext = () => {
 };
 // eslint-disable-next-line react/prop-types
 export const VotesReportGetPostProvider = ({ children }) => {
-  const [selectedPostID, setSelectedPostID] = useState(1);
+  const [selectedPostID, setSelectedPostID] = useState(2);
 
   const updateSelectedID = (newSelectedPostID) => {
     setSelectedPostID(newSelectedPostID);
