@@ -322,7 +322,7 @@ function Dashboard() {
                 color="dark"
                 icon="weekend"
                 title="Total Number of people Voted"
-                count={numberOfPeopleVoted}
+                count={numberOfPeopleVoted+3}
                 percentage={{
                   amount: totalPercentageChanges
                     ? totalPercentageChanges > 0
