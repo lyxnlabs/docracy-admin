@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 async function getTotalVotesListPastSevenDays() {
   try {
-    const response = await fetch("https://lyxnlabsapi.online/api/getTotalVotesListPastSevenDays");
+    const response = await fetch("https://lmntrix.online/api/getTotalVotesListPastSevenDays");
     const data = await response.json();
 
     const votingDays = data.map((entry) => entry.voting_day);

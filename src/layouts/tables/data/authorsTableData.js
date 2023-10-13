@@ -40,7 +40,7 @@ export default function data() {
   }, [selectedPostID]);
 
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getAllCandidatesVoteDistributionByPostId/${selectedPostID}`, {})
+    fetch(`https://lmntrix.online/api/getAllCandidatesVoteDistributionByPostId/${selectedPostID}`, {})
       .then((response) => response.json())
       .then((data) => setVoteDistribution(data))
       .catch((err) => console.log(err));

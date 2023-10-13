@@ -63,7 +63,7 @@ function Dashboard() {
   useEffect(() => {
     setShowBackdropForAnything(true);
     const votingData = {};
-    fetch(`https://lyxnlabsapi.online/api/getVotesByPost/${selectedPostID ? selectedPostID : 1}`, {
+    fetch(`https://lmntrix.online/api/getVotesByPost/${selectedPostID ? selectedPostID : 1}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -76,7 +76,7 @@ function Dashboard() {
         console.log(no_of_votes_list);
         var reportsBarChartDataTemp = {};
         reportsBarChartDataTemp.datasets = { label: "Votes", data: no_of_votes_list };
-        fetch(`https://lyxnlabsapi.online/api/getAllNamesByCandidateIdList`, {
+        fetch(`https://lmntrix.online/api/getAllNamesByCandidateIdList`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -104,7 +104,7 @@ function Dashboard() {
   useEffect(() => {
     async function getTotalVotesListPastSevenDays() {
       try {
-        const response = await fetch("https://lyxnlabsapi.online/api/getTotalVotesListPastSevenDays");
+        const response = await fetch("https://lmntrix.online/api/getTotalVotesListPastSevenDays");
         const data = await response.json();
 
         const votingDays = data.map((entry) => entry.voting_day);
@@ -139,7 +139,7 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getTotalVotes`, {
+    fetch(`https://lmntrix.online/api/getTotalVotes`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -150,7 +150,7 @@ function Dashboard() {
       .catch((err) => console.log(err));
   }, []);
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getNumberOfPeopleVoted`, {
+    fetch(`https://lmntrix.online/api/getNumberOfPeopleVoted`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ function Dashboard() {
   }, []);
 
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/1`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/1`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -174,7 +174,7 @@ function Dashboard() {
   // }, []);
 
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/2`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/2`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -186,7 +186,7 @@ function Dashboard() {
   // }, []);
 
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/3`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/3`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -197,7 +197,7 @@ function Dashboard() {
   //     .catch((err) => console.log(err));
   // }, []);
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/4`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/4`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -208,7 +208,7 @@ function Dashboard() {
   //     .catch((err) => console.log(err));
   // }, []);
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/5`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/5`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -219,7 +219,7 @@ function Dashboard() {
   //     .catch((err) => console.log(err));
   // }, []);
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/6`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/6`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -230,7 +230,7 @@ function Dashboard() {
   //     .catch((err) => console.log(err));
   // }, []);
   // useEffect(() => {
-  //   fetch(`https://lyxnlabsapi.online/api/getTotalVotes/7`, {
+  //   fetch(`https://lmntrix.online/api/getTotalVotes/7`, {
   //     headers: {
   //       "Content-Type": "application/json",
   //       Authorization: `Bearer ${token}`,
@@ -241,7 +241,7 @@ function Dashboard() {
   //     .catch((err) => console.log(err));
   // }, []);
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/totalVotesPercentageFromYday`, {
+    fetch(`https://lmntrix.online/api/totalVotesPercentageFromYday`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -269,7 +269,7 @@ function Dashboard() {
       return item.post_id;
     });
     post_ids.map(async (post_id, i) => {
-      fetch(`https://lyxnlabsapi.online/api/getPercentageChangeFromYday/${post_id}`, {
+      fetch(`https://lmntrix.online/api/getPercentageChangeFromYday/${post_id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

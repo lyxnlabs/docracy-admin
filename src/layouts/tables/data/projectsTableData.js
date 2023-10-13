@@ -39,7 +39,7 @@ export default function data() {
   const [selectedPostID, setSelectedPostID] = useVotesReportGetPostContext();
 
   useEffect(() => {
-    fetch(`https://lyxnlabsapi.online/api/getVotersDataByPostId/${selectedPostID}`, {})
+    fetch(`https://lmntrix.online/api/getVotersDataByPostId/${selectedPostID}`, {})
       .then((response) => response.json())
       .then((data) => setVoterData(data))
       .catch((err) => console.log(err));
