@@ -94,14 +94,14 @@ function Tables() {
                 <DataTable
                   table={{ columns, rows }}
                   isSorted={false}
-                  entriesPerPage={false}
+                  entriesPerPage={20}
                   showTotalEntries={false}
                   noEndBorder
                 />
               </MDBox>
             </Card>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Card>
               <MDBox
                 mx={2}
@@ -147,7 +147,7 @@ function Tables() {
                 />
               </MDBox>
             </Card>
-          </Grid>
+          </Grid> */}
         </Grid>
       </MDBox>
       <Footer />

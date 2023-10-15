@@ -142,7 +142,7 @@ function DataTable({
 
   if (pageIndex === 0) {
     entriesEnd = pageSize;
-  } else if (pageIndex === pageOptions.length - 1) {
+  } else if (pageIndex === pageOptions.length ) {
     entriesEnd = rows.length;
   } else {
     entriesEnd = pageSize * (pageIndex + 1);
@@ -249,7 +249,7 @@ function DataTable({
                 <Icon sx={{ fontWeight: "bold" }}>chevron_left</Icon>
               </MDPagination>
             )}
-            {renderPagination.length > 6 ? (
+            {renderPagination.length > 6  ? (
               <MDBox width="5rem" mx={1}>
                 <MDInput
                   inputProps={{ type: "number", min: 1, max: customizedPageOptions.length }}

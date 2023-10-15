@@ -293,7 +293,7 @@ function Dashboard() {
       <DashboardNavbar />
       <MDBox py={3}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
@@ -316,7 +316,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          <Grid item xs={12} md={6} lg={6}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="dark"
@@ -495,8 +495,8 @@ function Dashboard() {
           </Grid> */}
         </Grid>
         <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
+          <Grid container >
+            <Grid item xs={12} md={12} lg={12}>
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
@@ -507,7 +507,7 @@ function Dashboard() {
                 />
               </MDBox>
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
+            {/* <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
@@ -535,7 +535,7 @@ function Dashboard() {
                   chart={reportsLinearChartData}
                 />
               </MDBox>
-            </Grid>
+            </Grid> */}
           </Grid>
         </MDBox>
         {/* <MDBox>
